@@ -49,11 +49,13 @@ class OAuth1Swift {
             credential, response in
             
             self.observer = NSNotificationCenter.defaultCenter().addObserverForName(CallbackNotification.notificationName, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock:{
-                notification in
+                (notification: NSNotification!) in
                 //NSNotificationCenter.defaultCenter().removeObserver(self)
-                NSNotificationCenter.defaultCenter().removeObserver(self.observer)
-                let url = notification.userInfo[CallbackNotification.optionsURLKey] as NSURL
-                let parameters = url.query.parametersFromQueryString()
+                NSNotificationCenter.defaultCenter().removeObserver(self.observer!)
+                
+                let url = notification.userInfo![CallbackNotification.optionsURLKey] as NSURL
+                
+                let parameters = url.query!.parametersFromQueryString()
                 var credential: OAuthSwiftCredential = self.client.credential
                 self.client.credential.oauth_token = parameters["oauth_token"]!
                 self.client.credential.oauth_verifier = parameters["oauth_verifier"]!
